@@ -8,39 +8,17 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9n
 
 const InnerMeta = ({ propsData }) => {
   const [getInnerMeta, setInnerMeta] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
-    // Get Posts
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}media/${
-          propsData.mediaId && propsData.mediaId
-        }`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-      .then((result) => setInnerMeta(result.data))
-      // .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
-  };
+
+
 
   useEffect(() => {
-    getData();
+    const getMediaById = AppService.getMediaById(propsData && propsData.mediaId);
+    ReUse.getApiData(getMediaById, setInnerMeta, setLoading);
+
   }, []);
+
 
   return (
     <>
@@ -51,11 +29,10 @@ const InnerMeta = ({ propsData }) => {
         <a
           class="hentry v-height img-2 ml-auto gradient"
           style={{
-            backgroundImage: `url(${
-              getInnerMeta ? 
+            backgroundImage: `url(${getInnerMeta ?
               getInnerMeta && getInnerMeta.guid && getInnerMeta.guid.rendered
-                : "https://picsum.photos/1280/720"
-            })`,
+              : "https://picsum.photos/1280/720"
+              })`,
             margin: "10px",
           }}
         >

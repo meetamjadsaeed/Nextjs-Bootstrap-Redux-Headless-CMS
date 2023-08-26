@@ -4,8 +4,9 @@ import { store } from "../../redux";
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API;
 
 export function ApiHeaders(headers) {
-	const reduxState = store.getState();
-	const token = process.env.NEXT_PUBLIC_WORDPRESS_ACCESS_TOKEN;
+	// const reduxState = store.getState();
+	// const token = process.env.NEXT_PUBLIC_WORDPRESS_ACCESS_TOKEN;
+	const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
 	return {
 		Authorization: "Bearer " + token,
 		...headers,

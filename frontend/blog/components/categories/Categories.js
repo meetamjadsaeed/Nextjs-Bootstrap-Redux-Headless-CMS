@@ -7,93 +7,30 @@ import MainMeta from "./MainMeta";
 import SideMeta from "./SideMeta";
 import InnerMeta from "./InnerMeta";
 import { Spin } from 'antd';
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+
+sd
 
 const Categories = () => {
-  const [getMainCategories, setMainCategories] = useState();
-  const [getSideCategories, setSideCategories] = useState();
-  const [getInnerCategories, setInnerCategories] = useState();
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
 
-  const getData = async () => {
-    // Get Posts
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekcategories?per_page=1`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setMainCategories(result.data))
-      //   .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
+  const [getMainCategories, setMainCategories] = useState([]);
+  const [getSideCategories, setSideCategories] = useState([]);
+  const [getInnerCategories, setInnerCategories] = useState([]);
 
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekcategories?per_page=4`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setSideCategories(result.data.slice(3)))
-      //   .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
 
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekcategories?per_page=3`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setInnerCategories(result.data.slice(1)))
-      //   .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
 
   useEffect(() => {
     const allMainCategories = AppService.getAllCategoriesWithPage(1);
     ReUse.getApiData(allMainCategories, setMainCategories, setLoading);
+
+    const allSideCategories = AppService.getAllCategoriesWithPage(4);
+    ReUse.getApiData(allSideCategories, setSideCategories, setLoading2);
+
+    const innerCategories = AppService.getAllCategoriesWithPage(3);
+    ReUse.getApiData(innerCategories, setInnerCategories, setLoading3);
 
   }, []);
 
@@ -103,7 +40,7 @@ const Categories = () => {
         <div class="container">
           <div class="row align-items-stretch retro-layout">
             {getSideCategories ? (
-              getSideCategories.map((item) => {
+              getSideCategories?.slice(3)?.map((item) => {
                 return (
                   <div class="col-md-5 order-md-2">
                     <SideMeta
@@ -143,7 +80,7 @@ const Categories = () => {
 
               <div class="two-col d-block d-md-flex">
                 {getInnerCategories ? (
-                  getInnerCategories.map((item) => {
+                  getInnerCategories?.slice(1)?.map((item) => {
                     return (
                       <InnerMeta
                         propsData={{

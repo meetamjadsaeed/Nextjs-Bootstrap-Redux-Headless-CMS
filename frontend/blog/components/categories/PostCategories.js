@@ -2,7 +2,7 @@ import React from "react";
 import { Spin } from 'antd';
 
 const PostCategories = ({ categoriesData }) => {
-  console.log(categoriesData);
+
   return (
     <>
       <div class="pt-5">

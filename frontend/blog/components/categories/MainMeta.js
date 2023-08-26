@@ -7,60 +7,37 @@ const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9n
 
 const MainMeta = ({ propsData }) => {
   const [getMainMeta, setMainMeta] = useState();
+  const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
-    // Get Posts
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}media/${
-          propsData.mediaId && propsData.mediaId
-        }`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-      .then((result) => setMainMeta(result.data))
-      // .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
-  };
+
+
 
   useEffect(() => {
-    getData();
+    const getMediaById = AppService.getMediaById(propsData && propsData.mediaId);
+    ReUse.getApiData(getMediaById, setMainMeta, setLoading);
+
   }, []);
+
 
   return (
     <>
-     <Link href={`postsbycategory/${propsData && propsData.catId}`} legacyBehavior>
-      <a
-        class="hentry img-2 v-height mb30 gradient"
-        style={{
-          backgroundImage: `url(${
-            getMainMeta ? 
-            getMainMeta && getMainMeta.guid && getMainMeta.guid.rendered : "https://picsum.photos/1280/720"
-          })`,
-        }}
-      >
-        <span class="post-category text-white bg-success">
-          {propsData && propsData.count}
-        </span>
-        <div class="text text-sm">
-          <h2>{propsData && propsData.name}</h2>
-          <span>{propsData && propsData.description}</span>
-        </div>
-      </a>
+      <Link href={`postsbycategory/${propsData && propsData.catId}`} legacyBehavior>
+        <a
+          class="hentry img-2 v-height mb30 gradient"
+          style={{
+            backgroundImage: `url(${getMainMeta ?
+                getMainMeta && getMainMeta.guid && getMainMeta.guid.rendered : "https://picsum.photos/1280/720"
+              })`,
+          }}
+        >
+          <span class="post-category text-white bg-success">
+            {propsData && propsData.count}
+          </span>
+          <div class="text text-sm">
+            <h2>{propsData && propsData.name}</h2>
+            <span>{propsData && propsData.description}</span>
+          </div>
+        </a>
       </Link>
     </>
   );

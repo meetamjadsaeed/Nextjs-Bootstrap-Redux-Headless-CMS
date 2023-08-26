@@ -7,6 +7,11 @@ class AppService extends HttpServices {
     return this.get(`${ENDPOINTS.seekblog}?${ENDPOINTS.seekcategories}=${categoryId}`, header);
   }
 
+  static getCategoryById(categoryId) {
+    return this.get(`${ENDPOINTS.seekcategories}/${categoryId}`, header);
+  }
+
+
   static getAllPosts(perPage) {
     return this.get(`${ENDPOINTS.seekblog}?per_page=${perPage}`, header);
   }
@@ -19,7 +24,7 @@ class AppService extends HttpServices {
     return this.get(`${ENDPOINTS.seekcategories}?per_page=${noOfPosts}`, header);
   }
 
-  static getAllCategoriesW() {
+  static getAllCategories() {
     return this.get(`${ENDPOINTS.seekcategories}`, header);
   }
 
