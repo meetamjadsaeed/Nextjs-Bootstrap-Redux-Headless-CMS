@@ -6,56 +6,27 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Spin } from 'antd';
 import Reply from "./Reply";
+import AppService from "../../services/appServices";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+const token = "";
 
 // regex for removing the html tags
 const regex = /(<([^>]+)>)/gi;
 
 const CommentList = ({ commentListData }) => {
   const [getComments, setComments] = useState();
-  // const [getTotalComments, setTotalComments] = useState();
-  const [getPagination, setPagination] = useState(10);
-  var pagination = () => {
-    setPagination(getPagination + 5)
-  }
+  const [loading, setLoading] = useState(false);
+
 
 
   const router = useRouter();
   const { pid } = router.query;
 
-  const getData = async () => {
-    // Get Post Details
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}comments?post=${pid}&per_page=${getPagination}&parent=0`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setComments(result.data))
-      // .then((result) => setTotalComments(result.data.length))
-      // .then((result) => console.log(result.data[0]["title"]["rendered"]))
-      // .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
-  };
-
   useEffect(() => {
-    // console.log(pid);
-    getData();
-  });
+    const getCommentsListByPostId = AppService.getCommentsListByPostId(pid, getPagination);
+    ReUse.getApiData(getCommentsListByPostId, setComments, setLoading);
+
+  }, []);
 
   return (
     <>
@@ -82,13 +53,13 @@ const CommentList = ({ commentListData }) => {
                   </div>
 
 
-                  <Reply 
-                  propsData={
-                    {
-                      commentId:item.id,
-                      parentId:item.parent,
+                  <Reply
+                    propsData={
+                      {
+                        commentId: item.id,
+                        parentId: item.parent,
+                      }
                     }
-                  }
                   />
 
                 </li>

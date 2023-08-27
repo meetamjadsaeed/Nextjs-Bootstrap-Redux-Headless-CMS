@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import AppService from "../../services/appServices";
 const CategoryHeader = ({propsData}) => {
   const [getCurrentCategory, setCurrentCategory] = useState();
   const [loading, setLoading] = useState(false);

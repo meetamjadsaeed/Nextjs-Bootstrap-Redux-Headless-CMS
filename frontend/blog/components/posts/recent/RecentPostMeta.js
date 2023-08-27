@@ -3,69 +3,25 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+import AppService from "../../../services/appServices";
+const token = "";
 
 const recentPostMeta = ({ propsData }) => {
   const [getRecentPostMeta, setRecentPostMeta] = useState();
   const [getPostCategory, setPostCategory] = useState();
 
-  const getData = async () => {
-    // Get Post User
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}users/${propsData.auhtorId && propsData.auhtorId
-        }`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setRecentPostMeta(result.data))
-      // .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
-    // Get Post Category
-    await axios
-      .get(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}seekcategories/${propsData.catIds && propsData.catIds[0]
-        }`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then((result) => setPostCategory(result.data))
-      // .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
-  };
+
 
   useEffect(() => {
-    getData();
-    console.log(propsData.catIds && propsData.catIds[0]);
+    const getUserWithId = AppService.getUserWithId(propsData.auhtorId && propsData.auhtorId);
+    ReUse.getApiData(getUserWithId, setRecentPostMeta, setLoading);
+
+    const getCategoryById = AppService.getCategoryById(propsData.catIds && propsData.catIds[0]);
+    ReUse.getApiData(getCategoryById, setPostCategory, setLoading2);
+
   }, []);
 
   return (

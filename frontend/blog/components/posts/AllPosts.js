@@ -8,7 +8,9 @@ import RecentPostMeta from "./recent/RecentPostMeta";
 import { Spin } from 'antd';
 
 
-import AppService from "../services/appServices";
+
+import AppService from "../../services/appServices";
+
 
 
 const AllPosts = ({ propsData }) => {

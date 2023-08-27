@@ -7,8 +7,7 @@ import MainMeta from "./MainMeta";
 import SideMeta from "./SideMeta";
 import InnerMeta from "./InnerMeta";
 import { Spin } from 'antd';
-
-sd
+import AppService from "../../services/appServices";
 
 const Categories = () => {
   const [loading, setLoading] = useState(false);

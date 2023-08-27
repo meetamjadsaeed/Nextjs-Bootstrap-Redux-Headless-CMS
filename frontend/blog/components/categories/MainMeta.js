@@ -3,13 +3,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+import AppService from "../../services/appServices";
 
 const MainMeta = ({ propsData }) => {
   const [getMainMeta, setMainMeta] = useState();
   const [loading, setLoading] = useState(false);
-
-
 
 
   useEffect(() => {

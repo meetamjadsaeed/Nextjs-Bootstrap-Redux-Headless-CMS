@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import InnerMeta from "../categories/InnerMeta";
 import RelatedMeta from "./related/RelatedMeta";
 import { Spin } from 'antd';
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+const token = "";
 
 const Related = ({ realtedPostsData }) => {
   const [getRelatedPosts, setRelatedPosts] = useState();

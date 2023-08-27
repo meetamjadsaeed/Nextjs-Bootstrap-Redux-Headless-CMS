@@ -7,96 +7,35 @@ import FeaturedMedia from "./featured/FeaturedMedia";
 import FeaturedPostMeta from "./featured/FeaturedPostMeta";
 import CenterFeaturedPostMeta from "./featured/CenterFeaturedPostMeta";
 import { Spin } from 'antd';
+import AppService from "../../services/appServices";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJibG9nIiwiaWF0IjoxNjc0Mzk1NTI3LCJleHAiOjE4MzIwNzU1Mjd9.fzB04MWS5fh3IeDe6gaHukRHkahIqwZ52YWUIG7C5oc";
+const token = "";
 
 const FeaturedPosts = () => {
   const [FeaturedPosts, setFeaturedPosts] = useState();
   const [centerFeaturedPosts, setCenterFeaturedPosts] = useState();
   const [rightFeaturedPosts, setRightFeaturedPosts] = useState();
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
 
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
 
-  const getData = async () => {
-    // Get Posts
-    await axios
-    .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekblog?per_page=2`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((result) => setFeaturedPosts(result.data))
-      //   .then((result) => console.log(result.data))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log("Error", error.message);
-        }
-      });
 
-    // Get Posts
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekblog?per_page=3`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((result) => setCenterFeaturedPosts(result.data.slice(2)))
-      // .then((result) => console.log(result.data.slice(2)))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-      });
-
-    // Get Posts
-    await axios
-      .get(`${process.env.NEXT_PUBLIC_BACKEND_API}seekblog?per_page=5`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((result) => setRightFeaturedPosts(result.data.slice(3)))
-      // .then((result) => console.log(result.data.slice(2)))
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
-        }
-      });
-  };
 
   useEffect(() => {
-    getData();
+
+    const getAllPosts = AppService.getAllPosts(2);
+    ReUse.getApiData(getAllPosts, setFeaturedPosts, setLoading);
+
+    const getAllPosts2 = AppService.getAllPosts(3);
+    ReUse.getApiData(getAllPosts2, setCenterFeaturedPosts, setLoading2);
+
+    const getAllPosts3 = AppService.getAllPosts(5);
+    ReUse.getApiData(getAllPosts3, setRightFeaturedPosts, setLoading3);
+
   }, []);
+
 
   return (
     <>
@@ -110,7 +49,7 @@ const FeaturedPosts = () => {
           <div class="row align-items-stretch retro-layout-2">
             <div class="col-md-4">
               {FeaturedPosts ? (
-                FeaturedPosts.map((item) => {
+                FeaturedPosts?.map((item) => {
                   return (
                     <FeaturedPostMeta
                       propsData={{
@@ -131,7 +70,7 @@ const FeaturedPosts = () => {
             </div>
             <div class="col-md-4">
               {centerFeaturedPosts ? (
-                centerFeaturedPosts.map((item) => {
+                centerFeaturedPosts.slice(3)?.map((item) => {
                   return (
                     <CenterFeaturedPostMeta
                       propsData={{
@@ -151,7 +90,7 @@ const FeaturedPosts = () => {
             </div>
             <div class="col-md-4">
               {rightFeaturedPosts ? (
-                rightFeaturedPosts.map((item) => {
+                rightFeaturedPosts.slice(3)?.map((item) => {
                   return (
 
 
