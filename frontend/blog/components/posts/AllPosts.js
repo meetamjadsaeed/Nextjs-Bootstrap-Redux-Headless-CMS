@@ -21,7 +21,7 @@ const AllPosts = ({ propsData }) => {
 
 
   var pagination = () => {
-    setPagination(getPagination + 5)
+    setPagination((prevValue) => prevValue + 5)
   }
 
 
